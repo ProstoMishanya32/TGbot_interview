@@ -21,10 +21,4 @@ async def on_startup_notify(dp: Dispatcher):
 async def send_admins(message, markup=None, not_me=0):
     await bot.send_message(main_config.bot.main_admin, message, reply_markup=markup, disable_web_page_preview=True)
 
-    for admin in main_config.bot.admins:
-        try:
-            if str(admin['user_id']) != str(not_me):
-                await bot.send_message(admin['user_id'], message, reply_markup=markup, disable_web_page_preview=True)
-        except Exception as i:
-           print(i)
 

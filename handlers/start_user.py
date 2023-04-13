@@ -12,11 +12,17 @@ from contextlib import suppress
 from datetime import datetime, date
 
 from bot_telegram import dp, bot
-import pytz
+import pytz, os
 
 
 @dp.message_handler(commands = ['start'], state = "*")
 async def start(message: Message, state: FSMContext):
+    files = os.listdir("./data/txt_dialogs/")
+    for i in files:
+        if f"{message.from_user.id}.txt" == i:
+            await message.answer("Ваша заявка на рассмотрении ожидайте ответа!")
+            return
+
     await state.finish()
     await message.answer("Здравствуйте, добро пожаловать в проект!")
     await message.answer("Есть ли ли у вас опыт работы?")

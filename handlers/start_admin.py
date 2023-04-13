@@ -30,7 +30,6 @@ async def start(message: Message, state: FSMContext):
 
         with open(f"./data/txt_dialogs/{name_files}", 'r', encoding="utf-8") as file:
             data = file.read()
-            print(data[-3:])
             if "<✅>" == data[-3:]:
                 data = data.split(" ")
                 user_username = f"{[row for row in data if row.startswith('@')][0]} - <code>{user_id}</code> ✅"

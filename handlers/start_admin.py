@@ -78,9 +78,9 @@ async def selected_payment(call: CallbackQuery, state: FSMContext):
         file.close()
     if select == "✅":
         await bot.send_message(id_txt, ded("""
-        <b>Поздравляем! Ваша заявка одобрена! ✅</b>
+        Поздравляем! Ваша заявка одобрена! ✅
 
-        <i>Вступайте в чат проекта ILLUMINATES Project:
+        Вступайте в чат проекта ILLUMINATES Project:
         https://t.me/+yfWbnLuL0r1jM2U0
         
         Перед началом работы обязательно ознакомьтесь с мануалом в закрепленном сообщение чата!
@@ -89,7 +89,7 @@ async def selected_payment(call: CallbackQuery, state: FSMContext):
          
         Для того, чтобы получить домен и админ панель, напишите администратору чата, он предоставит доступ.
         
-        Желаем успехов!</i>
+        Желаем успехов!
         
         """))
     else:

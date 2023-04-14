@@ -6,14 +6,14 @@ from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.utils.markdown import hlink
 
-from modules.utils import main_config
+from modules.utils import main_config, ded
 from modules.utils.check_func import CheckAdmin
 from modules.keyboards import inline_user
 
 from contextlib import suppress
 from datetime import datetime, date
 
-from bot_telegram import dp
+from bot_telegram import dp, bot
 import os
 
 
@@ -33,15 +33,17 @@ async def start(message: Message, state: FSMContext):
             if "<✅>" == data[-3:]:
                 data = data.split(" ")
                 user_username = f"{[row for row in data if row.startswith('@')][0]} - <code>{user_id}</code> ✅"
-            else:
+            elif "<❌>" == data[-3:]:
                 data = data.split(" ")
                 user_username = f"{[row for row in data if row.startswith('@')][0]} - <code>{user_id}</code> ❌"
+            else:
+                data = data.split(" ")
+                user_username = f"{[row for row in data if row.startswith('@')][0]} - <code>{user_id}</code> 🟠"
 
         message_text += f"{i}. {user_username}\n"
 
     await message.answer(f"<i>Для открытия диалога с пользоваталем, введите его ID.</i>\n\n{message_text}")
     await state.set_state("waiting_id")
-
 
 
 
@@ -74,6 +76,31 @@ async def selected_payment(call: CallbackQuery, state: FSMContext):
         data = file.read()
         new_text = data + f"<{select}>"
         file.close()
+    if select == "✅":
+        await bot.send_message(id_txt, ded("""
+        <b>Поздравляем! Ваша заявка одобрена! ✅</b>
+
+        <i>Вступайте в чат проекта ILLUMINATES Project:
+        https://t.me/+yfWbnLuL0r1jM2U0
+        
+        Перед началом работы обязательно ознакомьтесь с мануалом в закрепленном сообщение чата!
+        
+        Если у вас есть вопросы, вы можете задать их в чате, а так же в личном сообщение @illuminates_ts
+         
+        Для того, чтобы получить домен и админ панель, напишите администратору чата, он предоставит доступ.
+        
+        Желаем успехов!</i>
+        
+        """))
+    else:
+        await bot.send_message(id_txt, ded("""
+        Ваша заявка отклонена! ❌
+
+        Узнать причину отказа вы можете у @illuminates_ts
+        
+        Желаем успехов
+        
+        """))
 
     user_file = open(f"./data/txt_dialogs/{id_txt}.txt", "w", encoding="utf-8")
     user_file.write(new_text)
